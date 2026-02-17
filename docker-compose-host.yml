@@ -1,0 +1,7 @@
+services:
+  go-update-header:
+    build: .
+    ports:
+      - "8080:8080"
+    network_mode: "host"
+    restart: unless-stopped
