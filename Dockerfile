@@ -6,13 +6,13 @@ WORKDIR /app
 COPY go.mod ./
 
 # Copy source code
-COPY simple_update_header.go .
+COPY show_headers.go .
 
 # Build the application
-RUN go build -o update_header simple_update_header.go
+RUN go build -o show_header show_headers.go
 
 # Expose port
 EXPOSE 8080
 
 # Run the application
-CMD ["./update_header"]
+CMD ["./show_header"]

@@ -1,5 +1,5 @@
 services:
-  go-update-header:
+  show-header:
     build: .
     ports:
       - "8080:8080"

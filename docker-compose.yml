@@ -1,12 +1,12 @@
 services:
-  go-update-header:
+  show-header:
     build: .
     ports:
       - "8080:8080" 
     networks:
-      - go-update-header-network
+      - show-header-network
     restart: unless-stopped
 
 networks:
-  go-update-header-network:
+  show-header-network:
     driver: bridge
