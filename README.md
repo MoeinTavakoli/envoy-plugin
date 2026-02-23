@@ -48,3 +48,15 @@ The goal of this project is to demonstrate how Envoy can be configured to **muta
 Make sure you have the following installed:
 - **Docker**: For containerized deployment.
 - **Docker Compose**: To manage multi-container applications.
+
+
+### Test command
+
+You can test your headers via this command 
+
+`curl -v -H "Authorization: REQUESTED_1" YOUR_URL`
+
+for example in this case i have one domain and can be check 
+
+`curl -v -H "Authorization: REQUESTED_1" http://envoy-test.moein-tavakoli.ir/`
+
