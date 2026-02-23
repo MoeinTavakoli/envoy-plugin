@@ -1,0 +1,47 @@
+resources:
+  - "@type": type.googleapis.com/envoy.config.listener.v3.Listener
+    name: listener_http_80
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+
+    filter_chains:
+      - filters:
+          - name: envoy.filters.network.http_connection_manager
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+              stat_prefix: ingress_http
+              use_remote_address: true
+              xff_num_trusted_hops: 0
+
+              route_config:
+                name: local_route
+                virtual_hosts:
+                  - name: test_respir
+                    domains:
+                      - "envoy-test.moein-tavakoli.ir"
+                    routes:
+                      - match:
+                          prefix: "/"
+                        route:
+                          cluster: local_service_8080
+                          timeout: 30s
+
+              http_filters:
+                # Lua filter to replace the 'Authorization' header
+                - name: envoy.filters.http.lua
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+                    inline_code: |
+                      function envoy_on_request(request_handle)
+                        -- Replace 'Authorization' header with 'abcd123'
+                        local current_auth = request_handle:headers():get("authorization")
+                        if current_auth then
+                          request_handle:headers():replace("authorization", "abcd123")
+                        end
+                      end
+
+                - name: envoy.filters.http.router
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
